@@ -69,6 +69,20 @@ Mongo Express provides a web-based interface for managing the MongoDB cluster.
   - `ME_CONFIG_MONGODB_PORT: 27017`
   - `ME_CONFIG_MONGODB_SSL: false`
 
+### Standalone MongoDB Instance
+
+A standalone MongoDB instance for simpler use cases.
+
+- **Service Name:** `mongo`
+- **Image:** `mongo:latest`
+- **Restart:** `always`
+- **Container Name:** `mongo`
+- **Ports:** `27017:27017`
+- **Environment Variables:**
+  - `MONGO_INITDB_ROOT_USERNAME: root`
+  - `MONGO_INITDB_ROOT_PASSWORD: root`
+- **Volumes:** `./db_data/:/data/db/`
+
 ## Networks
 
 - **Network Name:** `mongo-cluster`

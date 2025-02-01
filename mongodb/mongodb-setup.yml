@@ -1,108 +1,14 @@
 version: "3.8"
 
 services:
-  # Config Server for Sharded Cluster
-  config1:
+  mongo:
     image: mongo:latest
-    container_name: config1
-    command:
-      [
-        "mongod",
-        "--configsvr",
-        "--replSet",
-        "configReplSet",
-        "--bind_ip_all",
-        "--auth",
-      ]
-    ports:
-      - "27019:27019"
-    networks:
-      - mongo-cluster
-    volumes:
-      - ./config1_data:/data/db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: secret
-
-  # Shard 1 for the Sharded Cluster
-  shard1:
-    image: mongo:latest
-    container_name: shard1
-    command:
-      [
-        "mongod",
-        "--shardsvr",
-        "--replSet",
-        "shardReplSet",
-        "--bind_ip_all",
-        "--auth",
-      ]
-    ports:
-      - "27018:27018"
-    networks:
-      - mongo-cluster
-    volumes:
-      - ./shard1_data:/data/db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: secret
-
-  # Shard 2 for the Sharded Cluster
-  shard2:
-    image: mongo:latest
-    container_name: shard2
-    command:
-      [
-        "mongod",
-        "--shardsvr",
-        "--replSet",
-        "shardReplSet",
-        "--bind_ip_all",
-        "--auth",
-      ]
-    ports:
-      - "27020:27020"
-    networks:
-      - mongo-cluster
-    volumes:
-      - ./shard2_data:/data/db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: secret
-
-  # Mongos Router for Handling Client Requests
-  mongos:
-    image: mongo:latest
-    container_name: mongos
-    command:
-      ["mongos", "--configdb", "configReplSet/config1:27019", "--bind_ip_all"]
-    ports:
-      - "27017:27017"
-    networks:
-      - mongo-cluster
-    depends_on:
-      - config1
-      - shard1
-      - shard2
-
-  # Mongo Express UI for MongoDB
-  mongo-express:
-    image: mongo-express:latest
-    container_name: mongo-express
     restart: always
-    depends_on:
-      - mongos
+    container_name: mongo
     ports:
-      - "8081:8081"
-    networks:
-      - mongo-cluster
+      - 27017:27017 # make sure we don't have another mongo container running on same port
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
-      ME_CONFIG_MONGODB_ADMINPASSWORD: secret
-      ME_CONFIG_MONGODB_SERVER: mongos
-      ME_CONFIG_MONGODB_PORT: 27017
-      ME_CONFIG_MONGODB_SSL: false
-
-networks:
-  mongo-cluster:
-    driver: bridge
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - ./db_data/:/data/db/
