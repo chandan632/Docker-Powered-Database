@@ -79,7 +79,7 @@ Mongo Express provides a web-based interface for managing the MongoDB cluster.
 1. **Start the Cluster:**
 
    ```sh
-   docker-compose -f /home/chandan/workspace/Docker-Powered-Database/mongodb/mongodb-setup.yml up -d
+   docker-compose -f mongodb-setup.yml up -d
    ```
 
 2. **Access Mongo Express UI:**
