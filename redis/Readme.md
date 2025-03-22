@@ -1,70 +1,79 @@
-# Redis and Redis Commander Setup
+# Redis and RedisInsight - Docker Compose Setup
 
-This guide will help you set up Redis and Redis Commander using Docker Compose.
+## Overview
+This Docker Compose setup includes:
+- **Redis**: An in-memory data store used as a database, cache, and message broker.
+- **RedisInsight**: A visualization tool to manage and monitor Redis databases.
 
-## Docker Compose Configuration
+## Prerequisites
+Ensure you have the following installed on your system:
+- [Docker](https://www.docker.com/get-started)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
-Here is the Docker Compose configuration to set up Redis and Redis Commander:
+## Setup and Usage
 
-```yaml
-version: "3.8"
-
-services:
-  redis:
-    image: redis:latest
-    restart: always
-    container_name: redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - ./redis_data:/data
-    command: ["redis-server", "--appendonly", "yes"]
-
-  redis-commander:
-    image: rediscommander/redis-commander:latest
-    restart: always
-    container_name: redis-commander
-    environment:
-      REDIS_HOSTS: local:redis:6379
-    ports:
-      - "8081:8081"
-    depends_on:
-      - redis
-```
-
-## Running the Services
-
-To start the services, run the following command in the directory containing the `docker-compose.yml` file:
-
+### 1. Clone the Repository
 ```sh
-docker-compose up -d
+git clone <your-repository-url>
+cd <your-repository-folder>
 ```
 
-## Accessing Redis Commander
-
-Once the services are up and running, you can access Redis Commander through the following URL:
-
-```
-http://localhost:8081
-```
-
-This will allow you to manage your Redis instance through a web interface.
-
-## Stopping the Services
-
-To stop the services, run:
-
+### 2. Start the Containers
+Run the following command to start Redis and RedisInsight:
 ```sh
-docker-compose down
+docker compose up -d
+```
+This will:
+- Start the Redis container on **port 6379**
+- Start the RedisInsight container on **port 8001**
+
+### 3. Verify Running Containers
+Check if the containers are running:
+```sh
+docker ps
 ```
 
-## Data Persistence
+### 4. Access RedisInsight
+Open a browser and go to:
+```
+http://localhost:8001
+```
+Connect to Redis using **host: localhost** and **port: 6379**.
 
-The Redis data is persisted in the `./redis_data` directory on your host machine. This ensures that your data is not lost when the container is stopped or removed.
+## Stopping the Containers
+To stop the containers, run:
+```sh
+docker compose down
+```
 
-## Additional Information
+## Removing Containers and Volumes
+To remove all associated containers and volumes:
+```sh
+docker compose down -v
+```
 
-- Redis is configured to use append-only file persistence.
-- Redis Commander is configured to connect to the Redis instance running on `redis:6379`.
+## Persistent Storage
+- **Redis data** is stored in the `redis-volume-data` volume.
+- **RedisInsight data** is stored in the `redisinsight-data` volume.
 
-Feel free to customize the configuration as needed for your environment.
+## Troubleshooting
+### Check Logs
+If Redis or RedisInsight is not running properly, check the logs:
+```sh
+docker logs redis
+```
+```sh
+docker logs redisinsight
+```
+
+### Restart Containers
+```sh
+docker compose restart
+```
+
+## License
+This project is open-source and available for use under the [MIT License](LICENSE).
+
+---
+Enjoy using Redis with Docker! 🚀
+
