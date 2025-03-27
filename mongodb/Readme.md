@@ -37,3 +37,20 @@ mongodb://root:root@localhost:27017/
 ```
 
 This URL includes the root username and password specified in the environment variables.
+
+
+
+It will create mongo_dump named file into backup dorectory under mongo container 
+```
+mongodump --host localhost --port 27017 --username root --password root --authenticationDatabase admin --out /backup/mongo_dump
+```
+
+Compress it using 
+```
+tar -czvf /backup/mongo_dump.tar.gz -C /backup mongo_dump
+```
+
+Copy it into Documents folder (This need to be done outside of docker terminal)
+```
+docker cp 2ff937f4acbe:/backup/mongo_dump.tar.gz ~/Documents
+```
