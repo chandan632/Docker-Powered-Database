@@ -38,3 +38,13 @@ This project sets up a MySQL database and phpMyAdmin using Docker.
 2. Save the provided `docker-compose.yml` content to a file.
 3. Run `docker-compose up -d` to start the services.
 4. Access phpMyAdmin at `http://localhost:8080` and use the MySQL credentials to manage your database.
+
+Below command is used to take backup of databases in backup folder
+```
+mysqldump -u root -p'root' --all-databases > /backup/mysql_backup.sql
+```
+
+Below command is used to compress the backup file
+```
+tar -czvf /backup/mysql_backup.tar.gz -C /backup mysql_backup.sql
+```
