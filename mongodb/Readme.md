@@ -50,7 +50,26 @@ Compress it using
 tar -czvf /backup/mongo_dump.tar.gz -C /backup mongo_dump
 ```
 
+
 Copy it into Documents folder (This need to be done outside of docker terminal)
 ```
 docker cp 2ff937f4acbe:/backup/mongo_dump.tar.gz ~/Documents
+```
+
+
+
+For copy zip file into docker mongo container
+```
+mkdir backup // run it in docker container terminal
+docker cp mongo_dump.tar.gz <CONTAINER_ID>:/backup // run it in system terminal
+```
+
+Extract the compressed tar file
+```
+tar -xzvf /backup/mongo_dump.tar.gz -C /backup  // It will create mongo_dump folder under backup directory
+```
+
+Use the `mongorestore` command to restore only the `dev` database
+```
+mongorestore --host localhost --port 27017 --username root --password root --authenticationDatabase admin --db dev /backup/mongo_dump/dev
 ```
